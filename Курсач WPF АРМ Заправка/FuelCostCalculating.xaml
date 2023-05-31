@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="Курсач_WPF_АРМ_Заправка.FuelCostCalculating"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Курсач_WPF_АРМ_Заправка"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid x:Name="fuelCostCalculating">
+        <Button Content="В главное меню" Click="CloseFuelWindowButton_Click" Margin="-10,5,600,500" MaxWidth="120" MaxHeight="50" Visibility="Visible" FontFamily="Harlow Solid Italic" Width="120" Height="50" />
+
+        <Button Name="calculateButton" Content="Рассчитать" Margin="328,383,297,144" Click="calculateButton_Click" RenderTransformOrigin="0.458,1.02" />
+
+        <Slider x:Name="fuelSliderAi95" Minimum="0" Maximum="10000" Value="0" Margin="229,137,210,272" ValueChanged="fuelSlider_ValueChanged" RenderTransformOrigin="0.5,0.5" IsEnabled="False" />
+        <TextBox  Text="{Binding ElementName=fuelSliderAi95, Path=Value, StringFormat=0.# л, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" Margin="609,134,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="NoWrap" TextAlignment="Center"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542" />
+        <Slider x:Name="fuelSliderAi96" Minimum="0" Maximum="10000" Value="0" Margin="229,167,210,267" ValueChanged="fuelSlider_ValueChanged" RenderTransformOrigin="0.5,0.5" IsEnabled="False" />
+        <TextBox  Text="{Binding ElementName=fuelSliderAi96, Path=Value, StringFormat=0.# л, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" Margin="609,165,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="NoWrap" TextAlignment="Center"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542" />
+        <Slider x:Name="fuelSliderAi97" Minimum="0" Maximum="10000" Value="0" Margin="229,195,210,272" ValueChanged="fuelSlider_ValueChanged" RenderTransformOrigin="0.5,0.5" IsEnabled="False"/>
+        <TextBox  Text="{Binding ElementName=fuelSliderAi97, Path=Value, StringFormat=0.# л, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" Margin="609,193,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="NoWrap" TextAlignment="Center"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542" />
+        <Slider x:Name="fuelSliderAi98" Minimum="0" Maximum="10000" Value="0" Margin="229,225,210,267" ValueChanged="fuelSlider_ValueChanged" RenderTransformOrigin="0.5,0.5" IsEnabled="False"/>
+        <TextBox  Text="{Binding ElementName=fuelSliderAi98, Path=Value, StringFormat=0.# л, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" Margin="609,223,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="NoWrap" TextAlignment="Center"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542" />
+        <Slider x:Name="fuelSliderAi99" Minimum="0" Maximum="10000" Value="0" Margin="229,255,210,267" ValueChanged="fuelSlider_ValueChanged" RenderTransformOrigin="0.5,0.5" IsEnabled="False"/>
+        <TextBox  Text="{Binding ElementName=fuelSliderAi99, Path=Value, StringFormat=0.# л, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" Margin="609,253,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="NoWrap" TextAlignment="Center"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542" />
+        <Slider x:Name="fuelSliderAi100" Minimum="0" Maximum="10000" Value="0" Margin="229,285,210,217" ValueChanged="fuelSlider_ValueChanged" RenderTransformOrigin="0.5,0.5" IsEnabled="False"/>
+        <TextBox  Text="{Binding ElementName=fuelSliderAi100, Path=Value, StringFormat=0.# л, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" Margin="609,283,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="NoWrap" TextAlignment="Center"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542" />
+
+        <Label x:Name="Ai95Price" Content="Название" Margin="120,130,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="Ai96Price" Content="Название" Margin="120,160,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="Ai97Price" Content="Название" Margin="120,190,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="Ai98Price" Content="Название" Margin="120,220,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="Ai99Price" Content="Название" Margin="120,250,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="Ai100Price" Content="Название" Margin="120,280,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <Label x:Name="Ai95" Content="Название" Margin="20,130,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="Ai96" Content="Название" Margin="20,160,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="Ai97" Content="Название" Margin="20,190,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="Ai98" Content="Название" Margin="20,220,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="Ai99" Content="Название" Margin="20,250,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="Ai100" Content="Название" Margin="20,280,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <CheckBox x:Name="Ai95Check" Margin="200,137,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="Ai95Check_Checked" Unchecked="Ai95Check_Unchecked"/>
+        <CheckBox x:Name="Ai96Check" Margin="200,167,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="Ai96Check_Checked" Unchecked="Ai96Check_Unchecked"/>
+        <CheckBox x:Name="Ai97Check" Margin="200,197,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="Ai97Check_Checked" Unchecked="Ai97Check_Unchecked"/>
+        <CheckBox x:Name="Ai98Check" Margin="200,227,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="Ai98Check_Checked" Unchecked="Ai98Check_Unchecked"/>
+        <CheckBox x:Name="Ai99Check" Margin="200,257,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="Ai99Check_Checked" Unchecked="Ai99Check_Unchecked"/>
+        <CheckBox x:Name="Ai100Check" Margin="200,287,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="Ai100Check_Checked" Unchecked="Ai100Check_Unchecked"/>
+        <Label x:Name="Ai95Availability" Content="0.0 л" Margin="682,130,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542"/>
+
+        <Label x:Name="Ai96Availability" Content="0.0 л" Margin="682,160,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542"/>
+
+        <Label x:Name="Ai97Availability" Content="0.0 л" Margin="682,189,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542"/>
+
+
+        <Label x:Name="Ai98Availability" Content="0.0 л" Margin="682,222,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542"/>
+        <Label x:Name="Ai99Availability" Content="0.0 л" Margin="682,250,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542"/>
+        <Label x:Name="Ai100Availability" Content="0.0 л" Margin="682,280,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542"/>
+    </Grid>
+</UserControl>

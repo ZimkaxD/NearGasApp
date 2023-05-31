@@ -1,0 +1,10 @@
+﻿Сборка начата…
+1>------ Сборка начата: проект: Курсач WPF АРМ Заправка, Конфигурация: Debug Any CPU ------
+1>E:\Курсач WPF АРМ Заправка\Курсач WPF АРМ Заправка\FuelCostCalculating.xaml.cs(96,18,96,34): warning CS0219: Переменной "insufficientFuel" присвоено значение, но оно ни разу не использовано.
+1>E:\Курсач WPF АРМ Заправка\Курсач WPF АРМ Заправка\FuelCostCalculating.xaml.cs(29,24,29,33): warning CS0169: Поле "FuelCostCalculating.fuelPrice" никогда не используется.
+1>E:\Курсач WPF АРМ Заправка\Курсач WPF АРМ Заправка\FuelCostCalculating.xaml.cs(28,24,28,34): warning CS0169: Поле "FuelCostCalculating.fuelAmount" никогда не используется.
+1>E:\Курсач WPF АРМ Заправка\Курсач WPF АРМ Заправка\FuelCostCalculating.xaml.cs(96,18,96,34): warning CS0219: Переменной "insufficientFuel" присвоено значение, но оно ни разу не использовано.
+1>E:\Курсач WPF АРМ Заправка\Курсач WPF АРМ Заправка\FuelCostCalculating.xaml.cs(28,24,28,34): warning CS0169: Поле "FuelCostCalculating.fuelAmount" никогда не используется.
+1>E:\Курсач WPF АРМ Заправка\Курсач WPF АРМ Заправка\FuelCostCalculating.xaml.cs(29,24,29,33): warning CS0169: Поле "FuelCostCalculating.fuelPrice" никогда не используется.
+1>  Курсач WPF АРМ Заправка -> E:\Курсач WPF АРМ Заправка\Курсач WPF АРМ Заправка\bin\Debug\Курсач WPF АРМ Заправка.exe
+========== Сборка: успешно: 1, с ошибками: 0, без изменений: 0, пропущено: 0 ==========
