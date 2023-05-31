@@ -18,7 +18,7 @@ namespace Курсач_WPF_АРМ_Заправка
         private List<string> FuelTypes = new List<string> { "АВТОГАЗ (ПБА)*", "ДТ", "ДТ ECO", "АИ-92", "АИ-95", "АИ-98" };
         private List<string> ChangeFuelTypes = new List<string> { "АВТОГАЗ (ПБА)*", "ДТ", "ДТ ECO", "АИ-92", "АИ-95", "АИ-98" };
         private List<string> OriginalFuelTypes;
-
+        bool isDataSent = false; 
         private DBManager databaseManager = new DBManager();
 
         private const int PortNumber = 12345; // Порт для подключения
@@ -135,14 +135,23 @@ namespace Курсач_WPF_АРМ_Заправка
 
             try
             {
-                using (TcpClient client = new TcpClient())
+                if (!isDataSent) // Check if data has already been sent
                 {
-                    await client.ConnectAsync(IPAddress.Parse("127.0.0.1"), PortNumber);
+                    using (TcpClient client = new TcpClient())
+                    {
+                        await client.ConnectAsync(IPAddress.Parse("127.0.0.1"), PortNumber);
 
-                    byte[] data = Encoding.UTF8.GetBytes(formData.ToString());
-                    await client.GetStream().WriteAsync(data, 0, data.Length);
+                        byte[] data = Encoding.UTF8.GetBytes(formData.ToString());
+                        await client.GetStream().WriteAsync(data, 0, data.Length);
+
+                        isDataSent = true;
+                    }
+                    await SendConfirmationToFirstApp(formData.ToString());
                 }
-                await SendConfirmationToFirstApp(formData.ToString());
+                else
+                {
+                    throw new Exception("Заказ уже отправлен и находится на стадии принятия."); 
+                }
             }
             catch (Exception ex)
             {
@@ -165,6 +174,7 @@ namespace Курсач_WPF_АРМ_Заправка
                         Dispatcher.Invoke(() =>
                         {
                             MessageBox.Show(receivedMessage, "Информация о заказе", MessageBoxButton.OK, MessageBoxImage.Information);
+                            isDataSent = false;
                         });
                     }
                 }
