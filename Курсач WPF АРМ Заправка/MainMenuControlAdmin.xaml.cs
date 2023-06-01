@@ -64,7 +64,9 @@ namespace Курсач_WPF_АРМ_Заправка
 
         private void AdminPanelButton_Click(object sender, RoutedEventArgs e)
         {
-
+            AdminGrid adminGrid = new AdminGrid();
+            MainMenuControlAdminn.Children.Clear();
+            MainMenuControlAdminn.Children.Add(adminGrid);
         }
     }
 }
