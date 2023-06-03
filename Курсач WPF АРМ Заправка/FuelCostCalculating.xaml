@@ -9,7 +9,7 @@
     <Grid x:Name="fuelCostCalculating">
         <Button Content="В главное меню" Click="CloseFuelWindowButton_Click" Margin="-10,5,600,500" MaxWidth="120" MaxHeight="50" Visibility="Visible" FontFamily="Harlow Solid Italic" Width="120" Height="50" />
 
-        <Button Name="calculateButton" Content="Рассчитать" Margin="328,383,297,144" Click="calculateButton_Click" RenderTransformOrigin="0.458,1.02" />
+        <Button Name="calculateButton" Content="Рассчитать" Margin="326,383,299,149" Click="calculateButton_Click" RenderTransformOrigin="0.458,1.02" />
 
         <Slider x:Name="fuelSliderAi95" Minimum="0" Maximum="10000" Value="0" Margin="229,137,210,272" ValueChanged="fuelSlider_ValueChanged" RenderTransformOrigin="0.5,0.5" IsEnabled="False" />
         <TextBox  Text="{Binding ElementName=fuelSliderAi95, Path=Value, StringFormat=0.# л, UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" Margin="609,134,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="NoWrap" TextAlignment="Center"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542" />
@@ -54,5 +54,9 @@
         <Label x:Name="Ai98Availability" Content="0.0 л" Margin="682,222,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542"/>
         <Label x:Name="Ai99Availability" Content="0.0 л" Margin="682,250,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542"/>
         <Label x:Name="Ai100Availability" Content="0.0 л" Margin="682,280,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="68" Height="24" RenderTransformOrigin="-0.684,0.542"/>
+        <Button Content="Отчёт о продажах за день" Click="DaySallesButton_Click" Margin="65,472,525,18" MaxWidth="150" MaxHeight="100" Visibility="Visible" FontFamily="Harlow Solid Italic" />
+        <Button Content="Отчёт о ежедневном плане продаж" Click="FuelAmountOtchetButton_Click" Margin="544,482,50,35" MaxWidth="210" MaxHeight="100" Visibility="Visible" FontFamily="Harlow Solid Italic" />
+        <Button Content="Отчёт о наличии топлива" Click="EveryDaySallesPlanButton_Click" Margin="338,479,311,32" MaxWidth="150" MaxHeight="100" Visibility="Visible" FontFamily="Harlow Solid Italic" />
+
     </Grid>
 </UserControl>

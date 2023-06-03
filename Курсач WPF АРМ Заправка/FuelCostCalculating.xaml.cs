@@ -31,6 +31,9 @@ namespace Курсач_WPF_АРМ_Заправка
         List<Label> labelPriceList = new List<Label>();
         List<Label> labelFuelQuantityList = new List<Label>();
         int labelIndex = 0;
+        List<int> SalesCount = new List<int> {0,0,0,0,0,0};
+        List<double> SalesAmount = new List<double> { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+        List<double> FuelAmount = new List<double> { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
         private DBManager databaseManager = new DBManager();
 
         public FuelCostCalculating()
@@ -190,6 +193,31 @@ namespace Курсач_WPF_АРМ_Заправка
                 else
                 {
                     fuelAmounts.Add(Ai100.Content.ToString(), fuelAmount);
+                    Dictionary<string, double> fuelPrices = CalculateFuelPrice();
+
+                    double totalFuelQuantity = 0.0;
+                    double newFuelQuantity = 0.0;
+
+                    foreach (var fuel in fuelPrices)
+                    {
+                        string fuelType = fuel.Key;
+                        double totalPrice = fuel.Value;
+                        messageBuilder.AppendLine($"Тип топлива: {fuelType}, Стоимость: {totalPrice} руб.");
+                        fuelAmount = GetFuelAmountByType(fuelType);
+                        totalFuelQuantity += fuelAmount;
+                        newFuelQuantity -= fuelAmount;
+                        messageBuilder.AppendLine($"Количество {fuelType}: {fuelAmount} л" + "\n");
+                    }
+
+                    double totalFuelPrice = fuelPrices.Sum(fuel => fuel.Value);
+                    messageBuilder.AppendLine($"Общая стоимость: {totalFuelPrice} руб.");
+                    messageBuilder.AppendLine($"Общее количество топлива: {totalFuelQuantity} л");
+
+                    // Обновление количества топлива в базе данных
+                    UpdateFuelQuantityInDatabase(fuelAmounts);
+
+                    // Обновление отображения доступного количества топлива
+                    FillFuelQuantityFromDatabase();
                 }
             }
 
@@ -206,7 +234,6 @@ namespace Курсач_WPF_АРМ_Заправка
                     string fuelType = fuel.Key;
                     double totalPrice = fuel.Value;
                     messageBuilder.AppendLine($"Тип топлива: {fuelType}, Стоимость: {totalPrice} руб.");
-
                     double fuelAmount = GetFuelAmountByType(fuelType);
                     totalFuelQuantity += fuelAmount;
                     newFuelQuantity -= fuelAmount;
@@ -242,6 +269,7 @@ namespace Курсач_WPF_АРМ_Заправка
                 double fuelAmount = fuelSliderAi95.Value;
                 double fuelPrice = Convert.ToDouble(Ai95Price.Content.ToString().Split(' ')[0]);
                 double totalPrice = fuelAmount * fuelPrice;
+                SalesAmount[0] += totalPrice;
                 fuelPrices.Add(Ai95.Content.ToString(), totalPrice);
                 fuelAmounts.Add(Ai95.Content.ToString(), fuelAmount);
             }
@@ -251,6 +279,7 @@ namespace Курсач_WPF_АРМ_Заправка
                 double fuelAmount = fuelSliderAi96.Value;
                 double fuelPrice = Convert.ToDouble(Ai96Price.Content.ToString().Split(' ')[0]);
                 double totalPrice = fuelAmount * fuelPrice;
+                SalesAmount[1] += totalPrice;
                 fuelPrices.Add(Ai96.Content.ToString(), totalPrice);
                 fuelAmounts.Add(Ai96.Content.ToString(), fuelAmount);
             }
@@ -260,6 +289,7 @@ namespace Курсач_WPF_АРМ_Заправка
                 double fuelAmount = fuelSliderAi97.Value;
                 double fuelPrice = Convert.ToDouble(Ai97Price.Content.ToString().Split(' ')[0]);
                 double totalPrice = fuelAmount * fuelPrice;
+                SalesAmount[2] += totalPrice;
                 fuelPrices.Add(Ai97.Content.ToString(), totalPrice);
                 fuelAmounts.Add(Ai97.Content.ToString(), fuelAmount);
             }
@@ -269,6 +299,7 @@ namespace Курсач_WPF_АРМ_Заправка
                 double fuelAmount = fuelSliderAi98.Value;
                 double fuelPrice = Convert.ToDouble(Ai98Price.Content.ToString().Split(' ')[0]);
                 double totalPrice = fuelAmount * fuelPrice;
+                SalesAmount[3] += totalPrice;
                 fuelPrices.Add(Ai98.Content.ToString(), totalPrice);
                 fuelAmounts.Add(Ai98.Content.ToString(), fuelAmount);
             }
@@ -278,6 +309,7 @@ namespace Курсач_WPF_АРМ_Заправка
                 double fuelAmount = fuelSliderAi99.Value;
                 double fuelPrice = Convert.ToDouble(Ai99Price.Content.ToString().Split(' ')[0]);
                 double totalPrice = fuelAmount * fuelPrice;
+                SalesAmount[4] += totalPrice;
                 fuelPrices.Add(Ai99.Content.ToString(), totalPrice);
                 fuelAmounts.Add(Ai99.Content.ToString(), fuelAmount);
             }
@@ -287,6 +319,7 @@ namespace Курсач_WPF_АРМ_Заправка
                 double fuelAmount = fuelSliderAi100.Value;
                 double fuelPrice = Convert.ToDouble(Ai100Price.Content.ToString().Split(' ')[0]);
                 double totalPrice = fuelAmount * fuelPrice;
+                SalesAmount[5] += totalPrice;
                 fuelPrices.Add(Ai100.Content.ToString(), totalPrice);
                 fuelAmounts.Add(Ai100.Content.ToString(), fuelAmount);
             }
@@ -302,21 +335,33 @@ namespace Курсач_WPF_АРМ_Заправка
             {
                 case "АВТОГАЗ (ПБА)*":
                     fuelAmount = fuelSliderAi95.Value;
+                    SalesCount[0] += 1;
+                    FuelAmount[0] += fuelAmount;
                     break;
                 case "ДТ":
                     fuelAmount = fuelSliderAi96.Value;
+                    SalesCount[1] += 1;
+                    FuelAmount[1] += fuelAmount;
                     break;
                 case "ДТ ECO":
                     fuelAmount = fuelSliderAi97.Value;
+                    SalesCount[2] += 1;
+                    FuelAmount[2] += fuelAmount;
                     break;
                 case "АИ-92":
                     fuelAmount = fuelSliderAi98.Value;
+                    SalesCount[3] += 1;
+                    FuelAmount[3] += fuelAmount;
                     break;
                 case "АИ-95":
                     fuelAmount = fuelSliderAi99.Value;
+                    SalesCount[4] += 1;
+                    FuelAmount[4] += fuelAmount;
                     break;
                 case "АИ-98":
                     fuelAmount = fuelSliderAi100.Value;
+                    SalesCount[5] += 1;
+                    FuelAmount[5] += fuelAmount;
                     break;
             }
 
@@ -484,5 +529,108 @@ namespace Курсач_WPF_АРМ_Заправка
             fuelSliderAi100.IsEnabled = false;
         }
 
+        private void DaySallesButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Создаем приложение MS Word
+            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
+
+            try
+            {
+                // Создаем новый документ
+                Microsoft.Office.Interop.Word.Document doc = wordApp.Documents.Add();
+
+                // Заголовок отчета
+                Microsoft.Office.Interop.Word.Paragraph title = doc.Content.Paragraphs.Add();
+                title.Range.Text = "Отчет о продажах за день";
+                title.Range.Font.Bold = 1;
+                title.Range.Font.Size = 14;
+                title.Range.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                title.Range.InsertParagraphAfter();
+
+                // Дата
+                Microsoft.Office.Interop.Word.Paragraph dateParagraph = doc.Content.Paragraphs.Add();
+                dateParagraph.Range.Text = "Дата: " + DateTime.Now.ToShortDateString();
+                dateParagraph.Range.Font.Bold = 0;
+                dateParagraph.Range.Font.Size = 12;
+                dateParagraph.Range.InsertParagraphAfter();
+
+                // Данные о продажах
+                List<SaleData> salesData = GetSalesData(); 
+
+                Microsoft.Office.Interop.Word.Table salesTable = doc.Tables.Add(dateParagraph.Range, salesData.Count + 1, 4);
+                salesTable.Borders.Enable = 1;
+
+                // Заголовки столбцов
+                salesTable.Cell(1, 1).Range.Text = "Топливо";
+                salesTable.Cell(1, 2).Range.Text = "Количество продаж";
+                salesTable.Cell(1, 3).Range.Text = "Количество топлива";
+                salesTable.Cell(1, 4).Range.Text = "Сумма";
+
+
+                // Заполнение таблицы данными
+                for (int i = 0; i < salesData.Count; i++)
+                {
+                    salesTable.Cell(i + 2, 1).Range.Text = salesData[i].FuelType;
+                    salesTable.Cell(i + 2, 2).Range.Text = salesData[i].SaleCount.ToString();
+                    salesTable.Cell(i + 2, 3).Range.Text = salesData[i].FuelAmount.ToString();
+                    salesTable.Cell(i + 2, 4).Range.Text = salesData[i].SaleAmount.ToString();
+
+                }
+
+                // Сохранение документа
+                object fileName = System.IO.Path.Combine(Environment.CurrentDirectory, "SalesReport.docx"); 
+                doc.SaveAs2(fileName);
+                doc=wordApp.Documents.Open(fileName, ReadOnly:true);
+                
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex.Message);
+            }
+            finally
+            {
+
+            }
+        }
+        
+
+            private List<SaleData> GetSalesData()
+            {
+
+                List<SaleData> salesData = new List<SaleData>();
+
+
+                salesData.Add(new SaleData { FuelType = Ai95.Content.ToString(), SaleCount = SalesCount[0], FuelAmount= Math.Round(FuelAmount[0],2).ToString()+" л." ,SaleAmount = Math.Round(SalesAmount[0],2).ToString() + " р." });
+                salesData.Add(new SaleData { FuelType = Ai96.Content.ToString(), SaleCount = SalesCount[1], FuelAmount = Math.Round(FuelAmount[1],2).ToString() + " л.", SaleAmount = Math.Round(SalesAmount[1],2).ToString() + " р." });
+                salesData.Add(new SaleData { FuelType = Ai97.Content.ToString(), SaleCount = SalesCount[2], FuelAmount = Math.Round(FuelAmount[2],2).ToString() + " л.", SaleAmount = Math.Round(SalesAmount[2],2).ToString() + " р." });
+                salesData.Add(new SaleData { FuelType = Ai98.Content.ToString(), SaleCount = SalesCount[3], FuelAmount = Math.Round(FuelAmount[3],2).ToString() + " л.", SaleAmount = Math.Round(SalesAmount[3],2).ToString() + " р." });
+                salesData.Add(new SaleData { FuelType = Ai99.Content.ToString(), SaleCount = SalesCount[4], FuelAmount = Math.Round(FuelAmount[4],2).ToString() + " л.", SaleAmount = Math.Round(SalesAmount[4],2).ToString() + " р." });
+                salesData.Add(new SaleData { FuelType = Ai100.Content.ToString(), SaleCount = SalesCount[5], FuelAmount = Math.Round(FuelAmount[5],2).ToString() + " л.", SaleAmount = Math.Round(SalesAmount[5],2).ToString() + " р." });
+                double TotalFuelAmount = FuelAmount[0] + FuelAmount[1] + FuelAmount[2] + FuelAmount[3] + FuelAmount[4] + FuelAmount[5];
+                double TotalSaleAmount = SalesAmount[0] + SalesAmount[1] + SalesAmount[2] + SalesAmount[3] + SalesAmount[4] + SalesAmount[5];
+                salesData.Add(new SaleData { FuelType = "Общее", SaleCount = SalesCount[0]+ SalesCount[1]+ SalesCount[2]+ SalesCount[3]+ SalesCount[4]+ SalesCount[5], FuelAmount = Math.Round(TotalFuelAmount,2).ToString()+" л." , SaleAmount = Math.Round(TotalSaleAmount,2).ToString()+" р."  });
+            return salesData;
+            }
+
+        public class SaleData
+        {
+            public string FuelType { get; set; }
+            public int SaleCount { get; set; }
+            public string FuelAmount { get; set; }
+            public string SaleAmount { get; set; }
+        
+        }
+
+
+        private void EveryDaySallesPlanButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FuelAmountOtchetButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
