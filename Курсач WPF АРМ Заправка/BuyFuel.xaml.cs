@@ -7,9 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Курсач_WPF_АРМ_Заправка
 {
@@ -60,6 +62,7 @@ namespace Курсач_WPF_АРМ_Заправка
 
                 TextBox fuelQuantityTextBox = new TextBox();
                 fuelQuantityTextBox.Name = "fuelTextBox" + i;
+                fuelQuantityTextBox.PreviewTextInput += FuelQuantityTextBox_PreviewTextInput;
 
                 fuelPanel.Children.Add(fuelTypeComboBox);
 
@@ -79,14 +82,14 @@ namespace Курсач_WPF_АРМ_Заправка
             ComboBox selectedComboBox = (ComboBox)sender;
             string selectedFuelType = selectedComboBox.SelectedItem.ToString();
 
-            // Проверяем, есть ли выбранный тип топлива в списке FuelTypes
+            
             if (FuelTypes.Contains(selectedFuelType))
             {
-                // Удаляем выбранный тип топлива из списка
+
                 FuelTypes.Remove(selectedFuelType);
             }
 
-            // Добавляем предыдущий выбранный тип топлива обратно в список
+            
             if (e.RemovedItems.Count > 0)
             {
                 string previousFuelType = e.RemovedItems[0].ToString();
@@ -96,7 +99,15 @@ namespace Курсач_WPF_АРМ_Заправка
             selectedComboBox.IsEnabled = false;
         }
 
+        private void FuelQuantityTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
 
+            if (!char.IsDigit(e.Text, e.Text.Length - 1))
+            {
+              
+                e.Handled = true;
+            }
+        }
 
 
         private void AddSendButton()
@@ -124,10 +135,12 @@ namespace Курсач_WPF_АРМ_Заправка
                 ComboBox fuelTypeComboBox = fuelPanel.Children.OfType<ComboBox>().FirstOrDefault();
                 TextBox fuelQuantityTextBox = fuelPanel.Children.OfType<TextBox>().FirstOrDefault();
 
+
                 if (fuelTypeComboBox != null && fuelQuantityTextBox != null)
                 {
                     string fuelType = fuelTypeComboBox.SelectedItem?.ToString();
                     string fuelQuantity = fuelQuantityTextBox.Text;
+
 
                     formData.AppendLine($"Тип топлива: {fuelType}, Количество: {fuelQuantity + " л"}");
                 }
@@ -213,6 +226,8 @@ namespace Курсач_WPF_АРМ_Заправка
                 MessageBox.Show("ТЫ кто?", "Ошибка доступа", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
+  
 
 
         public void ResetFuelTypes()

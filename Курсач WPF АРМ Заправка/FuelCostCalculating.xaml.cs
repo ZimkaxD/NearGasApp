@@ -630,7 +630,89 @@ namespace Курсач_WPF_АРМ_Заправка
 
         private void FuelAmountOtchetButton_Click(object sender, RoutedEventArgs e)
         {
+            // Создаем приложение MS Word
+            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
+
+            try
+            {
+                // Создаем новый документ
+                Microsoft.Office.Interop.Word.Document doc = wordApp.Documents.Add();
+
+                // Заголовок отчета
+                Microsoft.Office.Interop.Word.Paragraph title = doc.Content.Paragraphs.Add();
+                title.Range.Text = "Отчет о количестве топлива";
+                title.Range.Font.Bold = 1;
+                title.Range.Font.Size = 14;
+                title.Range.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                title.Range.InsertParagraphAfter();
+
+                // Дата
+                Microsoft.Office.Interop.Word.Paragraph dateParagraph = doc.Content.Paragraphs.Add();
+                dateParagraph.Range.Text = "Дата: " + DateTime.Now.ToShortDateString();
+                dateParagraph.Range.Font.Bold = 0;
+                dateParagraph.Range.Font.Size = 12;
+                dateParagraph.Range.InsertParagraphAfter();
+
+                // Данные о продажах
+                List<AmountData> amountData = GetAmountData();
+
+                Microsoft.Office.Interop.Word.Table salesTable = doc.Tables.Add(dateParagraph.Range, amountData.Count + 1, 2);
+                salesTable.Borders.Enable = 1;
+
+                // Заголовки столбцов
+                salesTable.Cell(1, 1).Range.Text = "Топливо";
+                salesTable.Cell(1, 2).Range.Text = "Количество топлива";
+
+
+
+                // Заполнение таблицы данными
+                for (int i = 0; i < amountData.Count; i++)
+                {
+                    salesTable.Cell(i + 2, 1).Range.Text = amountData[i].FuelType;
+                    salesTable.Cell(i + 2, 2).Range.Text = amountData[i].FuelAmount.ToString();
+
+                }
+
+                // Сохранение документа
+                object fileName = System.IO.Path.Combine(Environment.CurrentDirectory, "FuelAmountReport.docx");
+                doc.SaveAs2(fileName);
+                doc = wordApp.Documents.Open(fileName, ReadOnly: true);
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex.Message);
+            }
+            finally
+            {
+
+            }
+        }
+        private List<AmountData> GetAmountData()
+        {
+
+            List<AmountData> amountData = new List<AmountData>();
+
+
+            amountData.Add(new AmountData { FuelType = Ai95.Content.ToString(), FuelAmount = Ai95Availability.Content.ToString()});
+            amountData.Add(new AmountData { FuelType = Ai96.Content.ToString(), FuelAmount = Ai96Availability.Content.ToString() });
+            amountData.Add(new AmountData { FuelType = Ai97.Content.ToString(), FuelAmount = Ai97Availability.Content.ToString() });
+            amountData.Add(new AmountData { FuelType = Ai98.Content.ToString(), FuelAmount = Ai98Availability.Content.ToString() });
+            amountData.Add(new AmountData { FuelType = Ai99.Content.ToString(), FuelAmount = Ai99Availability.Content.ToString() });
+            amountData.Add(new AmountData { FuelType = Ai100.Content.ToString(), FuelAmount = Ai100Availability.Content.ToString() });
+            double Ai95Fuel = Convert.ToDouble(Ai95Availability.Content.ToString().Split(' ')[0]); double Ai96Fuel = Convert.ToDouble(Ai96Availability.Content.ToString().Split(' ')[0]); double Ai97Fuel= Convert.ToDouble(Ai97Availability.Content.ToString().Split(' ')[0]); double Ai98Fuel= Convert.ToDouble(Ai98Availability.Content.ToString().Split(' ')[0]); double Ai99Fuel= Convert.ToDouble(Ai99Availability.Content.ToString().Split(' ')[0]); double Ai100Fuel= Convert.ToDouble(Ai100Availability.Content.ToString().Split(' ')[0]);
+            double TotalFuelAmount = Ai95Fuel + Ai96Fuel + Ai97Fuel + Ai98Fuel + Ai99Fuel + Ai100Fuel;
+            amountData.Add(new AmountData { FuelType = "Общее", FuelAmount = TotalFuelAmount.ToString()+" л."});
+            return amountData;
+        }
+
+        public class AmountData
+        {
+            public string FuelType { get; set; }
+            public string FuelAmount { get; set; }
 
         }
     }
 }
+
